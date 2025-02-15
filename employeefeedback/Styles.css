@@ -1,0 +1,132 @@
+﻿body{
+    font-size:12px;
+    color:rgba(0, 0, 0, 0.2);
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding:0;
+    margin:0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  
+}
+
+    .back-button img {
+        width: 100px;
+        height: 80px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+    .user-icon:hover {
+        transform: scale(1.1);
+    }
+
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    display: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    min-width: 150px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+    .dropdown-menu a {
+        display: block;
+        padding: 8px 12px;
+        
+        text-decoration: none;
+    }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+.navbar {
+    background-color: white !important; /* White background */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 10px 20px;
+}
+
+/* Navbar items aligned to the right */
+.navbar-nav {
+    margin-left: auto;
+}
+
+    /* Navbar links - increase size and add hover effect */
+    .navbar-nav .nav-link {
+        font-size: 20px; /* Increased font size */
+        padding: 14px 20px; /* Increased padding */
+
+        color: black !important; /* Keep text black */
+        transition: all 0.3s ease;
+    }
+
+        /* Underline effect on hover */
+        .navbar-nav .nav-link:hover {
+            text-decoration: underline;
+        }
+
+    /* Profile dropdown positioned to the right */
+    .navbar-nav .dropdown {
+        margin-left: 20px;
+    }
+
+/* Search input and button styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Added space between input and button */
+}
+
+    .search-container input {
+        width: 250px; /* Increased width */
+        font-size: 16px;
+    }
+
+    .search-container button {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+

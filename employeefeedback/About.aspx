@@ -18,15 +18,13 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: white
         }
-        .container {
-            max-width: 800px;
-        }
+       
         .section {
             margin-top: 30px;
             padding: 20px;
-            background: #fff;
+            background: #f8f9fa;;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
@@ -53,11 +51,11 @@
 
     <form runat="server">
           
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
        
         <a href="dashboard.aspx" class="navbar-brand d-flex align-items-center ms-3" data-bs-toggle="tooltip" data-bs-placement="right" title="Employee Feedback System">
-            <img src="Images\logoefs.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
+            <img src="Images\logoefspic.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -101,8 +99,17 @@
     </div>
 </nav>
 
-       
-            <h3>About Employee Feedback System</h3>
+        
+           <div class="mt-5 p-1 section">
+    
+            <div class="row">
+                 <div class="col">
+                     <h3 class=" text-uppercase text-center">about</h3>
+                 </div> 
+              </div>  
+            </div>
+
+        
 
             <div class="section">
                 <h4>What is the Employee Feedback System?</h4>

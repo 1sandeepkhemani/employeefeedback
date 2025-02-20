@@ -183,10 +183,12 @@
     <Content Include="EmployeeDetail.aspx" />
     <Content Include="EmployeeFeedbackDetails.aspx" />
     <Content Include="EmployeeList.aspx" />
+    <Content Include="ErrorPage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FeedbackForm.aspx" />
+    <Content Include="feedbackfromstyle.css" />
     <Content Include="Global.asax" />
-    <Content Include="Images\logoefs.jpg" />
+    <Content Include="Images\logoefspic.jpg" />
     <Content Include="Scripts.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -217,7 +219,6 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="App_Browsers\BrowserFile1.browser" />
-    <Content Include="Styles.css" />
     <Content Include="WebForm1.aspx" />
     <None Include="Dockerfile" />
     <None Include=".dockerignore">
@@ -310,6 +311,13 @@
     </Compile>
     <Compile Include="EmployeeList.aspx.designer.cs">
       <DependentUpon>EmployeeList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="FeedbackForm.aspx.cs">
       <DependentUpon>FeedbackForm.aspx</DependentUpon>

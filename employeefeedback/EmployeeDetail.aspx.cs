@@ -49,6 +49,11 @@ namespace employeefeedback
                                 imgQRCode.ImageUrl = reader["QRCode"].ToString();
                                 qrLink.HRef = $"https://{Request.Url.Host}:{Request.Url.Port}/FeedbackForm.aspx?empId={empId}";
                             }
+                            else
+                            {
+                                // Employee ID not found, redirect to error page
+                                Response.Redirect("ErrorPage.aspx");
+                            }
                         }
                     }
                 }
@@ -58,6 +63,7 @@ namespace employeefeedback
                 }
             }
         }
+
 
         protected void lbLogout_Click(object sender, EventArgs e)
         {

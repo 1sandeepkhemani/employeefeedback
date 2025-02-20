@@ -25,7 +25,7 @@
             <div class="container-fluid">
                
                 <a href="dashboard.aspx" class="navbar-brand d-flex align-items-center ms-3" data-bs-toggle="tooltip" data-bs-placement="right" title="Employee Feedback System">
-                    <img src="Images\logoefs.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
+                    <img src="Images\logoefspic.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
                     
                 </a>
 

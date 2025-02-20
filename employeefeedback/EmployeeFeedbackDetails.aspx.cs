@@ -32,22 +32,28 @@ namespace employeefeedback
             string connStr = ConfigurationManager.ConnectionStrings["FeedbackDB"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                // Get employee name
+                conn.Open();
+
+                // Validate if Employee ID exists
                 string empQuery = "SELECT Name FROM Employees WHERE EmployeeID = @EmployeeID";
                 using (SqlCommand cmdEmp = new SqlCommand(empQuery, conn))
                 {
                     cmdEmp.Parameters.AddWithValue("@EmployeeID", empId);
-                    conn.Open();
                     object result = cmdEmp.ExecuteScalar();
-                    lblEmployeeName.Text = result != null ? result.ToString() : "";
-                    conn.Close();
+
+                    if (result == null) // Employee ID not found
+                    {
+                        Response.Redirect("ErrorPage.aspx");
+                        return;
+                    }
+
+                    lblEmployeeName.Text = result.ToString(); // Set employee name
                 }
 
                 // Get feedback for the employee
                 using (SqlCommand cmd = new SqlCommand("SELECT CustomerName, Rating, Comments, FeedbackDate FROM Feedback WHERE EmployeeID = @EmployeeID ORDER BY FeedbackDate DESC", conn))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeID", empId);
-                    conn.Open();
                     DataTable dt = new DataTable();
                     new SqlDataAdapter(cmd).Fill(dt);
                     gvFeedback.DataSource = dt;
@@ -55,6 +61,7 @@ namespace employeefeedback
                 }
             }
         }
+
 
         protected void lbLogout_Click(object sender, EventArgs e)
         {

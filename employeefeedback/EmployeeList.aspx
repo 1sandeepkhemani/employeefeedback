@@ -35,16 +35,19 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul class="navbar-nav">
                   <li class="nav-item px-3">
-                      <a class="nav-link text-dark " href="Dashboard.aspx">Home</a>
-                  </li>
+                        <asp:LinkButton ID="LinkButton1" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton1_Click">Home</asp:LinkButton>
+  
+                    </li>
 
-                  <li class="nav-item ">
-                      <a class="nav-link text-dark " href="About.aspx">About</a>
-                  </li>
+                    <li class="nav-item ">
+                       <asp:LinkButton ID="LinkButton2" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton2_Click">About</asp:LinkButton>
+  
+                    </li>
 
-                  <li class="nav-item px-3">
-                      <a class="nav-link text-dark" href="EmployeeList.aspx">Employees</a>
-                  </li>
+                    <li class="nav-item px-3">
+                       <asp:LinkButton ID="LinkButton3" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton3_Click">Employees</asp:LinkButton>
+  
+                    </li>
 
 
                   <li class="nav-item dropdown">
@@ -58,9 +61,7 @@
                           <li><a class="dropdown-item" href="#">Profile</a></li>
                          
                           <li>
-                              <asp:LinkButton ID="lbLogout" runat="server" CssClass="dropdown-item" OnClick="lbLogout_Click">
-                                  Logout
-                              </asp:LinkButton>
+                              <a class="dropdown-item" href="Logout.aspx">Logout</a>
                           </li>
                       </ul>
                   </li>
@@ -110,7 +111,7 @@
           <asp:BoundField DataField="Mobile" HeaderText="Mobile Number">
                 <HeaderStyle CssClass="table-primary" />
               </asp:BoundField>
-        <asp:BoundField DataField="Position" HeaderText="Position" >
+        <asp:BoundField DataField="Role" HeaderText="Role" >
        
           <HeaderStyle CssClass="table-primary" />
           </asp:BoundField>

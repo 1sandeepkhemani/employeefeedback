@@ -37,7 +37,7 @@ namespace employeefeedback
             string connStr = ConfigurationManager.ConnectionStrings["FeedbackDB"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string query = "SELECT COUNT(*) FROM Employees WHERE EmployeeID = @EmployeeID";
+                string query = "SELECT COUNT(*) FROM Employee WHERE EmployeeID = @EmployeeID";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeID", empId);

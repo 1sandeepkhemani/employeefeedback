@@ -35,16 +35,19 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item px-3">
-                            <a class="nav-link text-dark " href="Dashboard.aspx">Home</a>
+                       <li class="nav-item px-3">
+                            <asp:LinkButton ID="LinkButton1" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton1_Click">Home</asp:LinkButton>
+  
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link text-dark " href="About.aspx">About</a>
+                           <asp:LinkButton ID="LinkButton2" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton2_Click">About</asp:LinkButton>
+  
                         </li>
 
                         <li class="nav-item px-3">
-                            <a class="nav-link text-dark" href="EmployeeList.aspx">Employees</a>
+                           <asp:LinkButton ID="LinkButton3" CssClass="nav-link text-dark" runat="server" OnClick="LinkButton3_Click">Employees</asp:LinkButton>
+  
                         </li>
 
 
@@ -59,9 +62,7 @@
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
                               
                                 <li>
-                                    <asp:LinkButton ID="lbLogout" runat="server" CssClass="dropdown-item" OnClick="lbLogout_Click">
-                                        Logout
-                                    </asp:LinkButton>
+                                     <a class="dropdown-item" href="Logout.aspx">Logout</a>
                                 </li>
                             </ul>
                         </li>
@@ -97,12 +98,11 @@
                     <HeaderStyle CssClass="table-primary" />
                     <ItemStyle Font-Bold="False" />
                     </asp:BoundField>
-                    <asp:HyperLinkField DataTextField="Name" DataNavigateUrlFields="EmployeeID" 
-                        DataNavigateUrlFormatString="EmployeeFeedbackDetails.aspx?empId={0}" HeaderText="Name">
-                        <ControlStyle Font-Bold="False" ForeColor="Black" CssClass="text-capitalize" />
+                           <asp:HyperLinkField DataTextField="Name" DataNavigateUrlFields="EmployeeID"  DataNavigateUrlFormatString="EmployeeFeedbackDetails.aspx?empId={0}" HeaderText="Name" ControlStyle-CssClass="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" >
+                        <ControlStyle CssClass="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover text-capitalize" Font-Bold="False" Font-Italic="False" ForeColor="Black"></ControlStyle>
                     <HeaderStyle CssClass="table-primary" />
                     </asp:HyperLinkField>
-                    <asp:BoundField DataField="Position" HeaderText="Position" >
+                    <asp:BoundField DataField="Role" HeaderText="Role" >
                     <HeaderStyle CssClass="table-primary" />
                     </asp:BoundField>
                     <asp:BoundField DataField="TotalFeedback" HeaderText="Total Feedback" >

@@ -11,7 +11,7 @@ namespace employeefeedback
 {
 
 
-    public partial class WebForm1
+    public partial class Logout
     {
 
         /// <summary>

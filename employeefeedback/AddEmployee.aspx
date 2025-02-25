@@ -19,13 +19,13 @@
 <body>
 
     <div class="container p-1">
-    <form runat="server" id="employeeForm">  
+    <form runat="server" id="employeeForm" onsubmit="return validateForm();">  
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
        
         <a href="dashboard.aspx" class="navbar-brand d-flex align-items-center ms-3" data-bs-toggle="tooltip" data-bs-placement="right" title="Employee Feedback System">
-             <img src="Images\logoefs.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
+             <img src="Images\logoefspic.jpg" alt="Logo" class="img-fluid rounded-circle me-2" style="width: 85px; height: 65px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -34,7 +34,7 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item px-3">
+               <li class="nav-item px-3">
                     <a class="nav-link text-dark " href="Dashboard.aspx">Home</a>
                 </li>
 
@@ -58,9 +58,7 @@
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                      
                         <li>
-                            <asp:LinkButton ID="lbLogout" runat="server" CssClass="dropdown-item" OnClick="lbLogout_Click">
-                                Logout
-                            </asp:LinkButton>
+                           <a class="dropdown-item" href="Logout.aspx">Logout</a>
                         </li>
                     </ul>
                 </li>
@@ -83,51 +81,74 @@
             </div>
             <div class="p1">
                 <div class="container mt-3">
-
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Green"></asp:Label>
-
-            <div class="form-group">
-                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" Placeholder="Employee Name"></asp:TextBox>
-                <small class="text-danger" id="nameError"></small>
-            </div>
-
-            <br />
-
-            <div class="form-group">
-                <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control-file" />
-                <small class="text-danger" id="photoError"></small>
-            </div>
-
-            <br />
-
-            <div class="form-group">
-                <asp:TextBox ID="txtPosition" runat="server" CssClass="form-control" Placeholder="Position"></asp:TextBox>
-                <small class="text-danger" id="positionError"></small>
-            </div>
-
-            <br />
-
-            <div class="form-group">
-                <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" Placeholder="Mobile Number"></asp:TextBox>
-                <small class="text-danger" id="mobileError"></small>
-            </div>
-
-            <br />
-
-            <div class="form-group">
-                <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" Placeholder="Address"></asp:TextBox>
-                <small class="text-danger" id="addressError"></small>
-            </div>
-
-            <br />
-
-            <asp:Button ID="btnSubmit" runat="server" Text="Add Employee" CssClass="btn btn-primary" OnClientClick="return validateForm();" OnClick="btnSubmit_Click" />
-            <br /><br />
+                <div class="mb-3">
+                      <label class="form-label">Employee Name</label>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" Placeholder="First Name" required></asp:TextBox>
+                            <span id="firstNameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control"  Placeholder="Last Name" required></asp:TextBox>
+                            <span id="lastNameError" class="text-danger"></span>
+                        </div>
                     </div>
- 
+                </div>
+
+              
+                <div class="mb-3">
+                    <label class="form-label">Mobile No.</label>
+                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control"  pattern="\d{10}" title="Enter 10-digit mobile number" Placeholder="Mobile No" required></asp:TextBox>
+                    <span id="mobileError" class="text-danger"></span>
+                </div>
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" Placeholder="Username" required ></asp:TextBox>
+                <span id="usernameError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" Placeholder="Password" required></asp:TextBox>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <span id="passwordError" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+            <label class="form-label" for="ddlRole">Role</label>
+            <asp:DropDownList ID="ddlRole" runat="server" CssClass="form-control" required>
+                <asp:ListItem Text="Select Role" Value="" />
+     
+            </asp:DropDownList>
+            <span id="roleError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload Image</label>
+                <asp:FileUpload ID="fulPhoto" runat="server" CssClass="form-control" Placeholder="Upload Image"/>
+                <span id="photoError" class="text-danger"></span>
+                
+            </div>
+
+           <div class="mb-3">
+                <label class="form-label">Address</label>
+                <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" Placeholder="Address"></asp:TextBox>
+                <span id="addressError" class="text-danger"></span>
+            </div>
+
+            <asp:Button ID="btnSubmit" runat="server" CssClass="btn btn-primary" Text="Add Employee" OnClick="btnSubmit_Click"  OnClientClick="return validateForm();" />
+
+        </div>
         </div>
 
             </div>
+    
 
     </form>
 
@@ -162,48 +183,96 @@
          });
      </script>
 
-    <script>
-        function validateForm() {
-            let isValid = true;
+<script>
+    function validateForm() {
+        let isValid = true;
 
-            let name = document.getElementById('<%= txtName.ClientID %>').value.trim();
-            let position = document.getElementById('<%= txtPosition.ClientID %>').value.trim();
-            let mobile = document.getElementById('<%= txtMobile.ClientID %>').value.trim();
-            let address = document.getElementById('<%= txtAddress.ClientID %>').value.trim();
-            let photo = document.getElementById('<%= fuPhoto.ClientID %>').value;
+        // Retrieve form values
+        let fname = document.getElementById("txtFirstName").value.trim();
+        let lname = document.getElementById("txtLastName").value.trim();
+        let mobile = document.getElementById("txtMobile").value.trim();
+        let address = document.getElementById("txtAddress").value.trim();
+        let photo = document.getElementById("fulPhoto").value;
+        let username = document.getElementById("txtUsername").value.trim();
+        let password = document.getElementById("txtPassword").value.trim();
+        let role = document.getElementById("ddlRole").value.trim();
 
-            // Clear previous error messages
-            document.getElementById("nameError").innerText = "";
-            document.getElementById("positionError").innerText = "";
-            document.getElementById("mobileError").innerText = "";
-            document.getElementById("addressError").innerText = "";
-            document.getElementById("photoError").innerText = "";
+        // Clear previous error messages and reset borders
+        document.querySelectorAll(".error-message").forEach(e => e.innerText = "");
+        document.querySelectorAll(".form-control").forEach(e => e.style.border = "1px solid #ced4da");
 
-            if (name === "" || /\d/.test(name)) {
-                document.getElementById("nameError").innerText = "Please enter your name.";
-                isValid = false;
-            }
-            if (position === "") {
-                document.getElementById("positionError").innerText = "Please enter your position.";
-                isValid = false;
-            }
-            if (mobile === "" || !/^\d{10}$/.test(mobile)) {
-                document.getElementById("mobileError").innerText = "Enter a valid 10-digit mobile number.";
-                isValid = false;
-            }
-            if (address === "") {
-                document.getElementById("addressError").innerText = "Please enter your  address.";
-                isValid = false;
-            }
-            if (photo === "") {
-                document.getElementById("photoError").innerText = "Please upload your photo.";
-                isValid = false;
-            }
-
-            return isValid;
+        // Validation logic
+        if (!fname) {
+            setError("txtFirstName", "firstNameError", "Please enter First Name.");
+            isValid = false;
         }
 
-    </script>
+        if (!lname) {
+            setError("txtLastName", "lastNameError", "Please enter Last Name.");
+            isValid = false;
+        }
+
+        if (!mobile.match(/^\d{10}$/)) {
+            setError("txtMobile", "mobileError", "Enter a valid 10-digit Mobile Number.");
+            isValid = false;
+        }
+
+        if (!address) {
+            setError("txtAddress", "addressError", "Please enter the Address.");
+            isValid = false;
+        }
+
+        if (!photo) {
+            setError("fulPhoto", "photoError", "Please upload a Photo.");
+            isValid = false;
+        }
+
+        if (!username) {
+            setError("txtUsername", "usernameError", "Please enter a Username.");
+            isValid = false;
+        }
+
+        if (!password || password.length < 6) {
+            setError("txtPassword", "passwordError", "Password must be at least 6 characters.");
+            isValid = false;
+        }
+
+        if (!role) {
+            setError("ddlRole", "roleError", "Please select a Role.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Function to set error message and apply red border
+    function setError(inputId, errorId, message) {
+        let inputElement = document.getElementById(inputId);
+        document.getElementById(errorId).innerText = message;
+        inputElement.style.border = "2px solid red";
+    }
+</script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+     <script>
+         $(document).ready(function () {
+             $("#togglePassword").click(function () {
+                 var input = $("#<%= txtPassword.ClientID %>");
+             var icon = $(this).find("i");
+             if (input.attr("type") === "password") {
+                 input.attr("type", "text");
+                 icon.removeClass("fa-eye").addClass("fa-eye-slash");
+             } else {
+                 input.attr("type", "password");
+                 icon.removeClass("fa-eye-slash").addClass("fa-eye");
+             }
+         });
+     });
+ </script>
+
      
    
 </body>

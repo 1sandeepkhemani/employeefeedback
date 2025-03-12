@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Employee Feedback</title>
+   <link rel="icon" type="image/png" href="Images/fulllogoefs.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="feedbackfromstyle.css" />
@@ -22,16 +23,34 @@
             document.getElementById("circle-" + value).classList.add("selected");
         }
 
+        function validateCommentLength() {
+            var commentText = document.getElementById('<%= txtComments.ClientID %>').value;
+              var wordCount = commentText.split(/\s+/).filter(function (word) { return word.length > 0; }).length;
+
+              if (wordCount > 200) {
+                  document.getElementById('<%= lblMessage.ClientID %>').innerText = "Your comment exceeds the 200-word limit.";
+                return false; // Prevent form submission
+            } else {
+                  document.getElementById('<%= lblMessage.ClientID %>').innerText = "";
+                  return true; // Allow form submission
+              }
+          }
+
+        $(document).ready(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
 
     </script>
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
-    <form runat="server">
+    <form runat="server" onsubmit="return validateCommentLength()">
         <div class="container">
             <!-- Logo at the Top -->
-            <div class="logo-container" title="Employee Feedback System">
-                <img src="Images/logoefspic.jpg" alt="Company Logo" width="85px" height="65px">
+            <div class="logo-container" data-bs-toggle="tooltip" data-bs-placement="right" title="Employee Feedback System">
+               <asp:Image ID="imgLogo" runat="server" CssClass="img-fluid" Width="120px" Height="100px"  />  
             </div>
 
             <h3 class="text-center mt-3">Feedback Form</h3>
@@ -103,6 +122,7 @@
                         <asp:Button ID="btnSubmitFeedback" runat="server" Text="Submit" CssClass="btn btn-primary btn-block" OnClick="btnSubmitFeedback_Click" />
                     </div>
                 </div>
+            </div>
             </div>
         
     </form>

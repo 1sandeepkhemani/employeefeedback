@@ -12,11 +12,13 @@ namespace employeefeedback
         protected void Page_Load(object sender, EventArgs e)
         {
 
+           FunctionFile.PageLoad(Response, Session);
+
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Dashboard.aspx");
+           FunctionFile.Home(Response, Session);
         }
     }
 }

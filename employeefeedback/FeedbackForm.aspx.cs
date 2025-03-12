@@ -19,6 +19,7 @@ namespace employeefeedback
                     if (IsEmployeeIdValid(empId))
                     {
                         ViewState["EmployeeID"] = empId; // Store Employee ID
+                        imgLogo.ImageUrl = "~/Images/fulllogoefs.png";
                     }
                     else
                     {

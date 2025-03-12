@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
@@ -7,26 +8,18 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 using QRCoder;
 
 namespace employeefeedback
 {
     public partial class AddEmployee : Page
     {
-        int employeeId;
+       
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            Response.Cache.SetExpires(DateTime.Now.AddMinutes(-1));
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetNoStore();
-            Response.Cache.SetValidUntilExpires(false);
-
-            if (Session["UserName"] == null && Session["Role"] == null)
-            {
-                Response.Redirect("Default.aspx");
-            }
+            FunctionFile.PageLoad(Response, Session);
 
             if (!IsPostBack)
             {
@@ -36,132 +29,178 @@ namespace employeefeedback
 
         private void LoadRoles()
         {
-            string[] roles = File.ReadAllLines(Server.MapPath("roles.txt"));
+            // Path to the JSON file
+            string jsonFilePath = Server.MapPath("roles.json");
+
+            // Read the entire JSON content from the file
+            var json = File.ReadAllText(jsonFilePath);
+
+            // Deserialize the JSON content to a list of roles
+            List<Role> roles = JsonConvert.DeserializeObject<List<Role>>(json);
+
+           
+
+            // Clear existing items from the DropDownList
+            ddlRole.Items.Clear();
+
+            // Add a default item (optional)
+            ddlRole.Items.Add(new ListItem("Select Role", ""));
+
+            // Add the roles to the DropDownList
             foreach (var role in roles)
             {
-                ddlRole.Items.Add(new ListItem(role, role));
+                ddlRole.Items.Add(new ListItem(role.RoleName, role.RoleId.ToString()));
             }
+        
+
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (fulPhoto.HasFile)
+            try
             {
-                try
+                // Get input values
+                string firstName = txtFirstName.Text.Trim();
+                string lastName = txtLastName.Text.Trim();
+                string name = firstName + " " + lastName;
+                string mobile = txtMobile.Text.Trim();
+                string username = txtUsername.Text.Trim();
+                string password = txtPassword.Text.Trim();
+                string role = ddlRole.SelectedValue;
+                string address = txtAddress.Text.Trim();
+
+                // Hash the password
+                string hashedPassword = FunctionFile.HashPassword(password);
+
+                // Get the logged-in Admin Name
+                string adminName = Session["UserName"].ToString();
+
+                // Save the Employee Photo
+                string photoFileName = SavePhoto(fulPhoto.PostedFile);
+
+                // Get the next EmployeeID based on the current year
+                string newEmployeeID = GenerateEmployeeID();
+
+                // Save Employee Data to Database
+                string connString = ConfigurationManager.ConnectionStrings["FeedbackDB"].ConnectionString;
+                using (SqlConnection con = new SqlConnection(connString))
                 {
-                    // Get input values
-                    string firstName = txtFirstName.Text.Trim(); // Get First Name
-                    string lastName = txtLastName.Text.Trim();   // Get Last Name
-                    string name = firstName + " " + lastName;    // Combine First Name and Last Name
+                    string query = "INSERT INTO Employee (EmployeeID, Name, Photo, Mobile, Address, Role, UserName, Password, CreatedBy, CreatedAt, Active, UpdateBy, UpdateAt) " +
+                                   "VALUES (@EmployeeID, @Name, @Photo, @Mobile, @Address, @Role, @UserName, @Password, @CreatedBy, GETDATE(), 1, @UpdateBy, GETDATE());";
 
-                    string mobile = txtMobile.Text.Trim();
-                    string username = txtUsername.Text.Trim();
-                    string password = txtPassword.Text.Trim();
-                    string role = ddlRole.SelectedValue;
-                    string address = txtAddress.Text.Trim();
-
-                    // Hash the password
-                    string hashedPassword = HashPassword(password);
-
-                    // Get the logged-in Admin Name
-                    string adminName = Session["UserName" +
-                        ""].ToString();
-
-                    // Save the Employee Photo
-                    string photoFileName = SavePhoto(fulPhoto.PostedFile);
-
-                    // Save Employee Data to Database
-                    string connString = ConfigurationManager.ConnectionStrings["FeedbackDB"].ConnectionString;
-                    using (SqlConnection con = new SqlConnection(connString))
+                    using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        string query = "INSERT INTO Employee (Name, Photo, Mobile, Address, Role, UserName, Password, CreatedBy, CreatedAt, Active) OUTPUT INSERTED.EmployeeID VALUES (@Name, @Photo, @Mobile, @Address, @Role, @UserName, @Password, @CreatedBy, GETDATE(), 1);";
+                        cmd.Parameters.AddWithValue("@EmployeeID", newEmployeeID);
+                        cmd.Parameters.AddWithValue("@Name", name);
+                        cmd.Parameters.AddWithValue("@Mobile", mobile);
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@Password", hashedPassword);
+                        cmd.Parameters.AddWithValue("@Role", role);
+                        cmd.Parameters.AddWithValue("@Address", address);
+                        cmd.Parameters.AddWithValue("@Photo", photoFileName);
+                        cmd.Parameters.AddWithValue("@CreatedBy", adminName);
+                        cmd.Parameters.AddWithValue("@UpdateBy", adminName);
 
-                        using (SqlCommand cmd = new SqlCommand(query, con))
-                        {
-                            cmd.Parameters.AddWithValue("@Name", name);
-                            cmd.Parameters.AddWithValue("@Mobile", mobile);
-                            cmd.Parameters.AddWithValue("@Username", username);
-                            cmd.Parameters.AddWithValue("@Password", hashedPassword);
-                            cmd.Parameters.AddWithValue("@Role", role);
-                            cmd.Parameters.AddWithValue("@Address", address);
-                            cmd.Parameters.AddWithValue("@Photo", photoFileName);
-                            cmd.Parameters.AddWithValue("@CreatedBy", adminName);
-
-                            con.Open();
-                            // Insert the employee and get the EmployeeID
-                            employeeId = (int)cmd.ExecuteScalar();
-                        }
+                        con.Open();
+                        cmd.ExecuteNonQuery();
                     }
-
-                    // Generate QR Code after getting the employeeId
-                    string qrFilePath = GenerateQRCode(employeeId);
-
-                    // Update the database with the QR code
-                    using (SqlConnection con = new SqlConnection(connString))
-                    {
-                        string updateQuery = "UPDATE Employee SET QRCode = @QRCode WHERE EmployeeID = @EmployeeID";
-                        using (SqlCommand cmd = new SqlCommand(updateQuery, con))
-                        {
-                            cmd.Parameters.AddWithValue("@QRCode", qrFilePath);
-                            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
-
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    // Refresh form and show success message
-                    RefreshForm();
-                    Response.Write($"<script>alert('Employee added successfully!\\nUsername: {username}\\nPassword: {password}');</script>");
                 }
-                catch (Exception ex)
+
+
+                string qrFilePath = GenerateQRCode(newEmployeeID);
+
+
+                using (SqlConnection con = new SqlConnection(connString))
                 {
-                    Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
+                    string updateQuery = "UPDATE Employee SET QRCode = @QRCode WHERE EmployeeID = @EmployeeID";
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@QRCode", qrFilePath);
+                        cmd.Parameters.AddWithValue("@EmployeeID", newEmployeeID);
+
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+
+               
+                RefreshForm();
+                Response.Write($"<script>alert('Employee added successfully!\\nEmployee ID: {newEmployeeID}\\nUsername: {username}');</script>");
+                Response.Redirect("EmployeeList.aspx");
             }
-            else
+            catch (Exception ex)
             {
-                Response.Write("<script>alert('Please upload a photo');</script>");
+                Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
             }
         }
 
-        // Hash Password using SHA-256
-        private string HashPassword(string password)
+        private string GenerateEmployeeID()
         {
-            using (SHA256 sha256 = SHA256.Create())
+            string currentYear = DateTime.Now.Year.ToString(); 
+            string newEmployeeID = "";
+
+            string connString = ConfigurationManager.ConnectionStrings["FeedbackDB"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connString))
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder sb = new StringBuilder();
-                foreach (byte b in bytes)
+                string query = "SELECT TOP 1 EmployeeID FROM Employee WHERE EmployeeID LIKE @YearPrefix ORDER BY EmployeeID DESC";
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    sb.Append(b.ToString("x2"));
+                    cmd.Parameters.AddWithValue("@YearPrefix", currentYear + "%");
+
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                       
+                        string lastID = result.ToString();
+                        int lastNumber = int.Parse(lastID.Substring(4)); 
+                        newEmployeeID = currentYear + (lastNumber + 1).ToString("D3"); 
+                    }
+                    else
+                    {
+                       
+                        newEmployeeID = currentYear + "001";
+                    }
                 }
-                return sb.ToString();
             }
+            return newEmployeeID;
         }
 
-        // Save Employee Photo to /Uploads/Photos/
+      
+        // Save Employee Photo to /Images/Employees/ or use a default image
         private string SavePhoto(HttpPostedFile file)
         {
-            string fileExt = Path.GetExtension(file.FileName);
-            string fileName = "Photo_" + Guid.NewGuid().ToString() + fileExt;
-            string filePath = Server.MapPath("~/Images/Employees/") + fileName;
+            string defaultImagePath = "Images/Employees/userimage3.png"; // Ensure this file exists
 
-            file.SaveAs(filePath);
-            return "Images/Employees/" + fileName; // Path to store in the database
+            if (file != null && file.ContentLength > 0)
+            {
+                string fileExt = Path.GetExtension(file.FileName);
+                string fileName = "Photo_" + Guid.NewGuid().ToString() + fileExt;
+                string filePath = Server.MapPath("~/Images/Employees/") + fileName;
+
+                file.SaveAs(filePath);
+                return "Images/Employees/" + fileName; // Path to store in the database
+            }
+
+            return defaultImagePath; // Return default image if no file uploaded
         }
 
-        // Generate QR Code with Feedback Form URL
-        private string GenerateQRCode(int empId)
+
+
+        private string GenerateQRCode(string empId)
         {
-            // Construct the Feedback Form URL with the Employee ID
             string feedbackUrl = Request.Url.GetLeftPart(UriPartial.Authority) + "/FeedbackForm.aspx?empId=" + empId;
 
-            // Define QR Code file name and path
-            string qrFileName = "QR_" + Guid.NewGuid().ToString() + ".png";
-            string qrFilePath = Server.MapPath("~/Images/QRCodes/") + qrFileName;
+            string folderPath = Server.MapPath("~/Images/QRCodes/");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath); // Ensure directory exists
+            }
 
-            // Generate the QR Code
+            string qrFileName = "QR_" + Guid.NewGuid().ToString() + ".png";
+            string qrFilePath = folderPath + qrFileName;
+
             using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             {
                 QRCodeData qrCodeData = qrGenerator.CreateQrCode(feedbackUrl, QRCodeGenerator.ECCLevel.Q);
@@ -174,23 +213,10 @@ namespace employeefeedback
                 }
             }
 
-            return "Images/QRCodes/" + qrFileName; // Path for storing in the database
+            return "Images/QRCodes/" + qrFileName;
         }
 
-        protected void lbLogout_Click(object sender, EventArgs e)
-        {
-            // Clear all session variables
-            Session.Abandon();
 
-            // Optionally clear authentication cookie (if using forms authentication)
-            if (Request.Cookies[".ASPXAUTH"] != null)
-            {
-                var cookie = new HttpCookie(".ASPXAUTH");
-                cookie.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(cookie);
-            }
-            Response.Redirect("Login.aspx");
-        }
 
         private void RefreshForm()
         {

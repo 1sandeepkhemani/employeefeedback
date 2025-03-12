@@ -174,6 +174,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="AddEmployee.aspx" />
+    <Content Include="ChangePassword.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
@@ -197,8 +198,10 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Dashboard.aspx" />
+    <Content Include="EditProfile.aspx" />
     <Content Include="EmployeeDashboard.aspx" />
     <Content Include="EmployeeDetail.aspx" />
+    <Content Include="EmployeeEdit.aspx" />
     <Content Include="EmployeeFeedbackDetails.aspx" />
     <Content Include="EmployeeList.aspx" />
     <Content Include="ErrorPage.aspx" />
@@ -206,9 +209,15 @@
     <Content Include="FeedbackForm.aspx" />
     <Content Include="feedbackfromstyle.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\Employees\userimage.jpg" />
+    <Content Include="Images\Employees\userimage3.png" />
+    <Content Include="Images\fulllogoefs.png" />
     <Content Include="Images\logoefspic.jpg" />
     <Content Include="Logout.aspx" />
-    <Content Include="roles.txt" />
+    <Content Include="PreviousEmployeeList.aspx" />
+    <Content Include="Profile.aspx" />
+    <Content Include="HeaderFooter.Master" />
+    <None Include="roles.json" />
     <Content Include="Scripts.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -293,6 +302,13 @@
     <Compile Include="AddEmployee.aspx.designer.cs">
       <DependentUpon>AddEmployee.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -310,6 +326,13 @@
     <Compile Include="Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EditProfile.aspx.cs">
+      <DependentUpon>EditProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditProfile.aspx.designer.cs">
+      <DependentUpon>EditProfile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EmployeeDashboard.aspx.cs">
       <DependentUpon>EmployeeDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -323,6 +346,13 @@
     </Compile>
     <Compile Include="EmployeeDetail.aspx.designer.cs">
       <DependentUpon>EmployeeDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEdit.aspx.cs">
+      <DependentUpon>EmployeeEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmployeeEdit.aspx.designer.cs">
+      <DependentUpon>EmployeeEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="EmployeeFeedbackDetails.aspx.cs">
       <DependentUpon>EmployeeFeedbackDetails.aspx</DependentUpon>
@@ -352,8 +382,16 @@
     <Compile Include="FeedbackForm.aspx.designer.cs">
       <DependentUpon>FeedbackForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FunctionFile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HeaderFooter.Master.cs">
+      <DependentUpon>HeaderFooter.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HeaderFooter.Master.designer.cs">
+      <DependentUpon>HeaderFooter.Master</DependentUpon>
     </Compile>
     <Compile Include="Logout.aspx.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
@@ -362,8 +400,23 @@
     <Compile Include="Logout.aspx.designer.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PreviousEmployeeList.aspx.cs">
+      <DependentUpon>PreviousEmployeeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PreviousEmployeeList.aspx.designer.cs">
+      <DependentUpon>PreviousEmployeeList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="qr.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -395,7 +448,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Images\Employees\" />
     <Folder Include="Images\QRCodes\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -403,6 +455,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+    <Content Include="ViewPage1.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,28 +1,28 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="employeefeedback.Default" %>
 
 <!DOCTYPE html>
+
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8">
+ 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login - Employee Feedback System</title>
-
+    <title>Employee Feedback System</title>
+   <link rel="icon" type="image/png" href="Images/fulllogoefs.png">
  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100 ">
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" onsubmit="return validateForm()">
         <div class="container">
             <div class="row justify-content-center">
                 <div>
                     
-                   
                     <div class="text-center mb-4">
-                        <img src="Images/logoefspic.jpg" alt="Company Logo" class="img-fluid mb-2" style="max-width: 120px;">
+                        <img src="Images/fulllogoefs.png" alt="Company Logo" class="img-fluid mb-2" style="max-width: 120px;">
                         <h3 class="fw-bold">Employee Feedback System</h3>
                     </div>
 
@@ -33,13 +33,13 @@
 
                         <div class="mb-3">
                             <label for="<%= txtUsername.ClientID %>" class="form-label">Username</label>
-                            <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" Placeholder="Enter your username"></asp:TextBox>
+                            <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" placeholder="Username"></asp:TextBox>
                         </div>
 
                         <div class="mb-3">
                             <label for="<%= txtPassword.ClientID %>" class="form-label">Password</label>
                             <div class="input-group">
-                                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" Placeholder="Enter your password"></asp:TextBox>
+                                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Password"></asp:TextBox>
                                 <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -53,6 +53,7 @@
                 </div>
             </div>
         </div>
+
     </form>
 
     
@@ -73,6 +74,24 @@
                 }
             });
         });
+
+        function validateForm() {
+            var username = document.getElementById('<%= txtUsername.ClientID %>').value;
+            var password = document.getElementById('<%= txtPassword.ClientID %>').value;
+            var errorMessage = document.getElementById('<% =lblMessage.ClientID %>').value;
+
+             if (username === '') {
+                 errorMessage += 'Username is required.\n';
+             }
+
+             if (password === '') {
+                 errorMessage += 'Password is required.\n';
+             }
+
+
+             return true; // Allow form submission if validation passes
+         }
+
     </script>
 
 </body>

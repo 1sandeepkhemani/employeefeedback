@@ -1,53 +1,28 @@
-﻿using QRCoder;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace employeefeedback
 {
-    public partial class Profile: System.Web.UI.Page
+    public partial class Profile : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
             FunctionFile.PageLoad(Response, Session);
 
             if (!IsPostBack)
             {
-
-                int empId = Convert.ToInt32(Session["EmployeeID"]);
-                LoadEmployeeDetails(empId);
-
+                if (Session["EmployeeID"] != null)
+                {
+                    int empId = Convert.ToInt32(Session["EmployeeID"]);
+                    LoadEmployeeDetails(empId);
+                }
+                else
+                {
+                    Response.Redirect("Login.aspx"); // Redirect if session expired
+                }
             }
-        }
-
-        protected void LinkButton1_Click(object sender, EventArgs e)
-        {
-
-            FunctionFile.Home(Response, Session);
-        }
-
-        protected void LinkButton2_Click(object sender, EventArgs e)
-        {
-
-            FunctionFile.About(Response);
-        }
-
-        protected void LinkButton3_Click(object sender, EventArgs e)
-        {
-
-           FunctionFile.CurrentEmployee(Response, Session);
-        }
-
-        protected void LinkButton5_Click(object sender, EventArgs e)
-        {
-
-          FunctionFile.PreviousEmployee(Response, Session);
         }
 
         private void LoadEmployeeDetails(int empId)
@@ -74,13 +49,17 @@ namespace employeefeedback
                                 int roleId = Convert.ToInt32(reader["Role"]);
                                 lblPosition.Text = FunctionFile.GetRoleNameById(roleId);
 
-                                imgPhoto.Src = reader["Photo"].ToString();
-                                qrLinkOpen.HRef = reader["QrCode"].ToString();
-                                
+                                imgPhoto.Src = string.IsNullOrEmpty(reader["Photo"].ToString()) ? "default-user.png" : reader["Photo"].ToString();
+                                string qrCodePath = reader["QRCode"].ToString();
+
+                                if (!string.IsNullOrEmpty(qrCodePath))
+                                {
+                                    qrImage.Src = qrCodePath;
+                                    downloadQr.HRef = qrCodePath; // Set download link
+                                }
                             }
                             else
                             {
-                                // Employee ID not found, redirect to error page
                                 Response.Redirect("ErrorPage.aspx");
                             }
                         }
@@ -92,7 +71,5 @@ namespace employeefeedback
                 }
             }
         }
-
-
     }
 }

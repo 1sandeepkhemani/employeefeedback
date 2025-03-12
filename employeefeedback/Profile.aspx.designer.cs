@@ -24,15 +24,6 @@ namespace employeefeedback
         protected global::System.Web.UI.HtmlControls.HtmlImage imgPhoto;
 
         /// <summary>
-        /// qrLinkOpen control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor qrLinkOpen;
-
-        /// <summary>
         /// lblEmployeeID control.
         /// </summary>
         /// <remarks>
@@ -94,5 +85,23 @@ namespace employeefeedback
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor ChangePassword;
+
+        /// <summary>
+        /// qrImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage qrImage;
+
+        /// <summary>
+        /// downloadQr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor downloadQr;
     }
 }

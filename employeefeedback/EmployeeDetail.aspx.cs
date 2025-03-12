@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Ocsp;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
@@ -31,7 +33,7 @@ namespace employeefeedback
                 try
                 {
                     conn.Open();
-                    string query = "SELECT EmployeeID, Name, UserName, Mobile,  Address, Role, Photo, QRCode FROM Employee WHERE EmployeeID = @EmployeeID";
+                    string query = "SELECT EmployeeID, Name, Mobile, Address, Role, Photo, QRCode FROM Employee WHERE EmployeeID = @EmployeeID";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeID", empId);
@@ -41,20 +43,24 @@ namespace employeefeedback
                             {
                                 lblEmployeeID.Text = reader["EmployeeID"].ToString();
                                 lblName.Text = reader["Name"].ToString();
-                                lblUserName.Text = reader["UserName"].ToString();
                                 lblMobile.Text = reader["Mobile"].ToString();
                                 lblAddress.Text = reader["Address"].ToString();
 
                                 int roleId = Convert.ToInt32(reader["Role"]);
                                 lblPosition.Text = FunctionFile.GetRoleNameById(roleId);
 
-                                imgPhoto.Src = reader["Photo"].ToString();
-                                imgQRCode.ImageUrl = reader["QRCode"].ToString();
-                                qrLink.HRef = $"https://{Request.Url.Host}:{Request.Url.Port}/FeedbackForm.aspx?empId={empId}";
+                                imgPhoto.Src = string.IsNullOrEmpty(reader["Photo"].ToString()) ? "default-user.png" : reader["Photo"].ToString();
+                                string qrCodePath = reader["QRCode"].ToString();
+
+                                if (!string.IsNullOrEmpty(qrCodePath))
+                                {
+                                    qrImage.Src = qrCodePath;
+                                    downloadQr.HRef = qrCodePath; // Set download link
+                                    qrLink.HRef = $"https://{Request.Url.Host}:{Request.Url.Port}/FeedbackForm.aspx?empId={empId}";
+                                }
                             }
                             else
                             {
-                                // Employee ID not found, redirect to error page
                                 Response.Redirect("ErrorPage.aspx");
                             }
                         }
@@ -66,6 +72,13 @@ namespace employeefeedback
                 }
             }
         }
-
     }
-}
+    }
+
+
+
+
+
+
+
+
